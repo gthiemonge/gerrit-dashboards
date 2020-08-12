@@ -1,0 +1,58 @@
+url: https://review.opendev.org
+boards:
+- title: Tripleo Octavia Review Board
+  query: "((project:^openstack/tripleo-.* octavia) OR project:openstack/puppet-octavia) status:open"
+  tables:
+    - name: Tripleo stable/*
+      query: branch:^stable/.* NOT reviewedby:self
+    - name: Need review
+      query: reviewer:self -reviewedby:self -owner:self
+    - name: Need work
+      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+    - name: Starred reviews
+      query: is:starred
+    - name: My open reviews
+      query: owner:self
+    - name: Incoming reviews
+      query: -reviewedby:self -owner:self -age:3w limit:15
+- title: Octavia Review Board
+  query: "(project:openstack/octavia OR project:openstack/octavia-lib OR project:openstack/octavia-dashboard OR project:openstack/octavia-tempest-plugin OR project:openstack/python-octaviaclient) status:open"
+  tables:
+    - name: Octavia stable/*
+      query: branch:^stable/.* NOT reviewedby:self
+    - name: Need review
+      query: reviewer:self -reviewedby:self -owner:self
+    - name: Need work
+      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+    - name: Starred reviews
+      query: is:starred
+    - name: My open reviews
+      query: owner:self
+    - name: Incoming reviews
+      query: -reviewedby:self -owner:self -age:3w limit:15
+- title: Designate Review Board
+  query: "(project:openstack/designate OR project:openstack/designate-dashboard OR project:openstack/designate-tempest-plugin OR project:openstack/python-designateclient) status:open"
+  tables:
+    - name: Designate stable/*
+      query: branch:^stable/.* NOT reviewedby:self
+    - name: Need review
+      query: reviewer:self -reviewedby:self -owner:self
+    - name: Need work
+      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+    - name: Starred reviews
+      query: is:starred
+    - name: My open reviews
+      query: owner:self
+    - name: Incoming reviews
+      query: -reviewedby:self -owner:self -age:3w limit:15
+- title: All
+  query: "status:open"
+  tables:
+    - name: Need review
+      query: reviewer:self -reviewedby:self -owner:self
+    - name: Need work
+      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+    - name: Starred reviews
+      query: is:starred
+    - name: My open reviews
+      query: owner:self

@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import sys
+import urllib.parse
+import yaml
+
+try:
+    config_file = sys.argv[1]
+except IndexError:
+    print("usage: {} <config file>".format(sys.argv[0]))
+    sys.exit(1)
+
+with open(config_file) as fp:
+    config = yaml.safe_load(fp.read())
+
+base_url = config['url']
+
+q = urllib.parse.quote_plus
+
+for board in config['boards']:
+    url = '{}/#/dashboard/?title={}&foreach={}&{}'.format(
+        base_url,
+        q(board['title']),
+        q(board['query']),
+        "&".join("{}={}".format(q(e['name']), q(e['query']))
+                 for e in board['tables']))
+
+    print("{}: {}".format(board['title'], url))

@@ -1,36 +1,41 @@
 url: https://review.opendev.org
 boards:
-- title: Tripleo Octavia Review Board
-  query: "((project:^openstack/tripleo-.* octavia) OR project:openstack/puppet-octavia) status:open"
+- title: My Tripleo Octavia Review Board
+  query: "(project:^openstack/tripleo-.* OR project:openstack/puppet-octavia) status:open"
   tables:
-    - name: Tripleo stable/*
-      query: branch:^stable/.* NOT reviewedby:self
+    - name: Backports on stable/*
+      query: (reviewer:self OR owner:self OR is:starred OR octavia) branch:^stable/.* NOT reviewedby:self
     - name: Need review
       query: reviewer:self -reviewedby:self -owner:self
     - name: Need work
-      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
-    - name: Starred reviews
-      query: is:starred
+      query: (owner:self OR is:starred) (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
     - name: My open reviews
-      query: owner:self
+      query: owner:self OR is:starred
     - name: Incoming reviews
-      query: -reviewedby:self -owner:self -age:3w limit:15
+      query: (octavia OR scenario010 OR sc010) -reviewedby:self -owner:self -age:3w limit:15
 - title: Octavia Review Board
-  query: "(project:openstack/octavia OR project:openstack/octavia-lib OR project:openstack/octavia-dashboard OR project:openstack/octavia-tempest-plugin OR project:openstack/python-octaviaclient) status:open"
+  query: "(project:openstack/octavia OR project:openstack/octavia-lib OR project:openstack/octavia-dashboard OR project:openstack/octavia-tempest-plugin OR project:openstack/python-octaviaclient)"
   tables:
-    - name: Octavia stable/*
-      query: branch:^stable/.* NOT reviewedby:self
-    - name: Need review
-      query: reviewer:self -reviewedby:self -owner:self
-    - name: Need work
-      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
-    - name: Starred reviews
-      query: is:starred
-    - name: My open reviews
-      query: owner:self
+    - name: Backports on stable/*
+      query: status:open branch:^stable/.*
+    - name: Recent merges on master
+      query: status:merged branch:master -age:3w
     - name: Incoming reviews
-      query: -reviewedby:self -owner:self -age:3w limit:15
-- title: Designate Review Board
+      query: status:open -age:4w
+- title: My Octavia Review Board
+  query: "(project:openstack/octavia OR project:openstack/octavia-lib OR project:openstack/octavia-dashboard OR project:openstack/octavia-tempest-plugin OR project:openstack/python-octaviaclient)"
+  tables:
+    - name: Backports on stable/*
+      query: status:open branch:^stable/.* (-reviewedby:self -owner:self)
+    - name: Recent merges on master
+      query: status:merged branch:master -age:3w
+    - name: Need review
+      query: status:open -reviewedby:self -owner:self limit:25
+    - name: Need work
+      query: status:open (is:starred OR owner:self) (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+    - name: My open reviews
+      query: status:open (is:starred OR owner:self)
+- title: My Designate Review Board
   query: "(project:openstack/designate OR project:openstack/designate-dashboard OR project:openstack/designate-tempest-plugin OR project:openstack/python-designateclient) status:open"
   tables:
     - name: Designate stable/*
@@ -51,7 +56,7 @@ boards:
     - name: Need review
       query: reviewer:self -reviewedby:self -owner:self
     - name: Need work
-      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+      query: (owner:self OR is:starred) (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
     - name: Starred reviews
       query: is:starred
     - name: My open reviews

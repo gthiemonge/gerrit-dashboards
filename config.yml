@@ -8,7 +8,7 @@ boards:
     - name: Need review
       query: reviewer:self -reviewedby:self -owner:self
     - name: Need work
-      query: (owner:self OR is:starred) (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+      query: (owner:self OR is:starred) (label:Code-Review<=-1 OR label:Verified<=-1)
     - name: My open reviews
       query: owner:self OR is:starred
     - name: Incoming reviews
@@ -32,7 +32,7 @@ boards:
     - name: Need review
       query: status:open -reviewedby:self -owner:self limit:25
     - name: Need work
-      query: status:open (is:starred OR owner:self) (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+      query: status:open (is:starred OR owner:self) (label:Code-Review<=-1 OR label:Verified<=-1)
     - name: My open reviews
       query: status:open (is:starred OR owner:self)
 - title: My Designate Review Board
@@ -43,7 +43,7 @@ boards:
     - name: Need review
       query: reviewer:self -reviewedby:self -owner:self
     - name: Need work
-      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+      query: owner:self (label:Code-Review<=-1 OR label:Verified<=-1)
     - name: Starred reviews
       query: is:starred
     - name: My open reviews
@@ -56,7 +56,7 @@ boards:
     - name: Need review
       query: reviewer:self -reviewedby:self -owner:self
     - name: Need work
-      query: (owner:self OR is:starred) (label:Code-Review<=-1 OR label:Verified<=-1 OR NOT is:mergeable)
+      query: (owner:self OR is:starred) (label:Code-Review<=-1 OR label:Verified<=-1)
     - name: Starred reviews
       query: is:starred
     - name: My open reviews
